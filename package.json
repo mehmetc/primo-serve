@@ -1,0 +1,28 @@
+{
+  "name": "primo-serve",
+  "version": "0.0.1",
+  "description": "A simple Proxy that serves your local development files.",
+  "main": "dist/primo.js",
+  "bin": {
+    "primoServe": "./primoServe.js"
+  },
+  "scripts": {
+    "build": "rimraf dist/ && babel ./src --out-dir dist/ --ignore ./node_modules",
+    "watch": "rimraf dist/ && babel ./src --out-dir dist/ --ignore ./node_modules --watch",
+    "start": "yarn run build && node dist/index.js"
+  },
+  "author": "Mehmet Celik",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "browser-sync": "^2.24.5",
+    "chalk": "^2.4.1",
+    "mime-types": "^2.1.18",
+    "minimist": "^1.2.0",
+    "proxy-middleware": "^0.15.0"
+  }
+}
