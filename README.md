@@ -15,10 +15,10 @@ primoServe --vid=NUI --proxy=https://your.primo.url --dir=/directory/to/vids
 #### Install
 __with yarn__
 ```bash
-yarn global add primoServe
+yarn global add primo-serve
 ```
 
 __with npm__
 ```bash
-npm install -g primoServe
+npm install -g primo-serve
 ```
