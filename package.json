@@ -1,12 +1,16 @@
 {
   "name": "primo-serve",
-  "version": "0.0.2",
-  "description": "A simple Proxy that serves your local development files.",  
-  "keywords": ["ExLibris", "Primo", "NUI"],
+  "version": "0.0.6",
+  "description": "A simple Proxy that serves your local development files.",
+  "keywords": [
+    "ExLibris",
+    "Primo",
+    "NUI"
+  ],
   "homepage": "https://github.com/mehmetc/primo-serve",
-  "bugs":{
+  "bugs": {
     "url": "https://github.com/mehmetc/primo-serve/issues",
-    "email": "mehmet@celik.be"    
+    "email": "mehmet@celik.be"
   },
   "repository": {
     "type": "git",
