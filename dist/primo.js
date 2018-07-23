@@ -4,7 +4,14 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * @file Primo proxy
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * @author Mehmet Celik <mehmet.celik at kuleuven.be>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * KULeuven/LIBIS
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Mehmet Celik (c) 2018
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
+
 
 var _url = require('url');
 
@@ -34,28 +41,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/** Primo proxy class */
 var Primo = function () {
-	_createClass(Primo, null, [{
-		key: 'parseUrl',
-		value: function parseUrl(rawUrl) {
-			var parsedUrl = _url2.default.parse(rawUrl);
-			if (parsedUrl.port == null) {
-				switch (parsedUrl.protocol) {
-					case "https:":
-						parsedUrl.port = 443;
-						break;
-					case "http:":
-						parsedUrl.port = 80;
-						break;
-					default:
-						throw parsedUrl.protocol + ' not supported';
-				}
-			}
-
-			return parsedUrl;
-		}
-	}]);
-
+	/**
+ * Create a proxy
+ * @param {String} vid - The ViewID that you wish to open
+ * @param {String} baseUrl - Base URL to your Primo environment that needs proxing
+ * @param {String} baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
+ */
 	function Primo(vid, baseUrl, baseDir) {
 		_classCallCheck(this, Primo);
 
@@ -63,6 +56,11 @@ var Primo = function () {
 		this.baseUrl = baseUrl;
 		this.baseDir = baseDir;
 	}
+
+	/**
+ * Start proxy and serve files from disk
+ */
+
 
 	_createClass(Primo, [{
 		key: 'serve',
@@ -80,14 +78,24 @@ var Primo = function () {
 				proxy: {
 					target: 'http://' + parsedBaseUrl.hostname,
 					middleware: [function (req, res, next) {
-						_this._proxyMiddelware(_this.baseDir, _this.baseUrl, req, res, next);
+						_this._fileProxy(_this.baseDir, req, res, next);
 					}, (0, _proxyMiddleware2.default)(parsedBaseUrl)]
 				}
 			});
 		}
+
+		/**
+  * Proxies files from your baseDir
+  * @access private
+  * @param baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
+  * @param req - The original http(s) request
+  * @param res - The original http(s) response
+  * @param next - Call next middleware
+  */
+
 	}, {
-		key: '_proxyMiddelware',
-		value: function _proxyMiddelware(baseDir, baseUrl, req, res, next) {
+		key: '_fileProxy',
+		value: function _fileProxy(baseDir, req, res, next) {
 			var parsedUrl = _url2.default.parse(req.url);
 			console.log(req.url);
 

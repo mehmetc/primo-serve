@@ -1,7 +1,17 @@
 {
   "name": "primo-serve",
-  "version": "0.0.1",
-  "description": "A simple Proxy that serves your local development files.",
+  "version": "0.0.2",
+  "description": "A simple Proxy that serves your local development files.",  
+  "keywords": ["ExLibris", "Primo", "NUI"],
+  "homepage": "https://github.com/mehmetc/primo-serve",
+  "bugs":{
+    "url": "https://github.com/mehmetc/primo-serve/issues",
+    "email": "mehmet@celik.be"    
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mehmetc/primo-serve.git"
+  },
   "main": "dist/primo.js",
   "bin": {
     "primoServe": "./primoServe.js"
@@ -9,7 +19,7 @@
   "scripts": {
     "build": "rimraf dist/ && babel ./src --out-dir dist/ --ignore ./node_modules",
     "watch": "rimraf dist/ && babel ./src --out-dir dist/ --ignore ./node_modules --watch",
-    "start": "yarn run build && node dist/index.js"
+    "start": "yarn run build && node dist/bin.js"
   },
   "author": "Mehmet Celik",
   "license": "MIT",
