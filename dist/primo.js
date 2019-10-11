@@ -100,7 +100,7 @@ var Primo = function () {
 			console.log(req.url);
 
 			try {
-				var filePath = baseDir + '/' + parsedUrl.pathname.replace('/primo-explore/custom', '');
+				var filePath = '' + baseDir + parsedUrl.pathname.replace('/primo-explore/custom', '');
 				var contentType = _mimeTypes2.default.lookup(filePath);
 				var data = _fs2.default.readFileSync(filePath);
 				console.log(_chalk2.default.bold.yellow('hijacking') + ' ' + _chalk2.default.underline(parsedUrl.pathname) + ' from ' + _chalk2.default.underline(filePath) + ' size ' + _chalk2.default.bold(data.length));

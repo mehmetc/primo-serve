@@ -26,52 +26,52 @@ export default class Primo {
 		this.baseDir = baseDir;
 	}
 
-/**
-* Start proxy and serve files from disk
-*/
+	/**
+	* Start proxy and serve files from disk
+	*/
 	serve() {
 		const parsedBaseUrl = url.parse(this.baseUrl);
 		let bs = browserSync.create(parsedBaseUrl.hostname);
 
 		bs.init({
 			ui: false,
-		  files: [`${this.baseDir}/**/*`],
-		  port: 8003,
-		  startPath: "/primo-explore/search?vid=" + this.vid,
+			files: [`${this.baseDir}/**/*`],
+			port: 8003,
+			startPath: "/primo-explore/search?vid=" + this.vid,
 			proxy: {
 				target: `http://${parsedBaseUrl.hostname}`,
-				middleware: [(req, res, next) => {this._fileProxy(this.baseDir, req, res, next)},
+				middleware: [(req, res, next) => { this._fileProxy(this.baseDir, req, res, next) },
 				proxy(parsedBaseUrl)]
 			}
 		});
 	}
 
-/**
-* Proxies files from your baseDir
-* @access private
-* @param baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
-* @param req - The original http(s) request
-* @param res - The original http(s) response
-* @param next - Call next middleware
-*/
+	/**
+	* Proxies files from your baseDir
+	* @access private
+	* @param baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
+	* @param req - The original http(s) request
+	* @param res - The original http(s) response
+	* @param next - Call next middleware
+	*/
 	_fileProxy(baseDir, req, res, next) {
 		const parsedUrl = url.parse(req.url);
 		console.log(req.url);
 
-		try{
-			const filePath = `${baseDir}/${parsedUrl.pathname.replace('/primo-explore/custom','')}`;
+		try {
+			const filePath = `${baseDir}${parsedUrl.pathname.replace('/primo-explore/custom', '')}`;
 			const contentType = mime.lookup(filePath);
 			const data = fs.readFileSync(filePath);
 			console.log(`${chalk.bold.yellow('hijacking')} ${chalk.underline(parsedUrl.pathname)} from ${chalk.underline(filePath)} size ${chalk.bold(data.length)}`);
 
 			try {
-	      res.writeHead(200, {'Content-Type': contentType});
-	    } catch (e) {
-	      console.log(e);
-	    }
-	    res.write(data);
-	    res.end();
-		} catch(err) {
+				res.writeHead(200, { 'Content-Type': contentType });
+			} catch (e) {
+				console.log(e);
+			}
+			res.write(data);
+			res.end();
+		} catch (err) {
 			next();
 		}
 	}

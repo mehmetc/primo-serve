@@ -14,7 +14,8 @@ if (Object.keys(argv).includes('proxy') &&
     Object.keys(argv).includes('vid')
   ) {
     let baseDir = Object.keys(argv).includes('dir') ? argv.dir : process.cwd()
-    console.log(baseDir);
+    console.log("Serving Primo...");
+    console.log(` vid = "${argv.vid}"\n proxy = "${argv.proxy}"\n dir = "${baseDir}"`);
     const primo = new Primo(argv.vid, argv.proxy, baseDir);
     primo.serve();
 } else {
