@@ -1,6 +1,6 @@
 {
   "name": "primo-serve",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A simple Proxy that serves your local development files.",
   "keywords": [
     "ExLibris",
