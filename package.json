@@ -1,6 +1,6 @@
 {
   "name": "primo-serve",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A simple Proxy that serves your local development files.",
   "keywords": [
     "ExLibris",
@@ -19,7 +19,7 @@
   "main": "dist/primo.js",
   "type": "module",
   "bin": {
-    "primoServe": "./primoServe.js"
+    "primoServe": "./primoServe.sh"
   },
   "scripts": {
     "build": "rimraf dist/ && babel ./src --out-dir dist/ --ignore ./node_modules",
