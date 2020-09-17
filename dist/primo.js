@@ -50,11 +50,15 @@ var Primo = function () {
  * @param {String} baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
  */
 	function Primo(vid, baseUrl, baseDir) {
+		var isVE = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
 		_classCallCheck(this, Primo);
 
 		this.vid = vid;
 		this.baseUrl = baseUrl;
 		this.baseDir = baseDir;
+		this.isVE = isVE;
+		this.URLPrefix = this.isVE ? "/discovery" : "/primo-explore";
 	}
 
 	/**
@@ -69,12 +73,13 @@ var Primo = function () {
 
 			var parsedBaseUrl = _url2.default.parse(this.baseUrl);
 			var bs = _browserSync2.default.create(parsedBaseUrl.hostname);
+			var startPath = this.URLPrefix + '/search?vid=' + this.vid;
 
 			bs.init({
 				ui: false,
 				files: [this.baseDir + '/**/*'],
 				port: 8003,
-				startPath: "/primo-explore/search?vid=" + this.vid,
+				startPath: startPath,
 				proxy: {
 					target: 'http://' + parsedBaseUrl.hostname,
 					middleware: [function (req, res, next) {
@@ -100,7 +105,8 @@ var Primo = function () {
 			console.log(req.url);
 
 			try {
-				var filePath = '' + baseDir + parsedUrl.pathname.replace('/primo-explore/custom', '');
+				var filePath = '' + baseDir + parsedUrl.pathname.replace(this.URLPrefix + '/custom', '');
+				console.log(_chalk2.default.red(filePath));
 				var contentType = _mimeTypes2.default.lookup(filePath);
 				var data = _fs2.default.readFileSync(filePath);
 				console.log(_chalk2.default.bold.yellow('hijacking') + ' ' + _chalk2.default.underline(parsedUrl.pathname) + ' from ' + _chalk2.default.underline(filePath) + ' size ' + _chalk2.default.bold(data.length));

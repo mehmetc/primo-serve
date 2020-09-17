@@ -18,10 +18,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var argv = require('minimist')(process.argv.slice(2));
 if (Object.keys(argv).includes('proxy') && Object.keys(argv).includes('vid')) {
   var baseDir = Object.keys(argv).includes('dir') ? argv.dir : process.cwd();
+  var primoVE = Object.keys(argv).includes('ve') ? true : false;
+  if (/:/.test(argv.vid)) {
+    primoVE = true;
+  }
   console.log("Serving Primo...");
-  console.log(' vid = "' + argv.vid + '"\n proxy = "' + argv.proxy + '"\n dir = "' + baseDir + '"');
-  var primo = new _primo2.default(argv.vid, argv.proxy, baseDir);
+  console.log(' vid = "' + argv.vid + '"\n proxy = "' + argv.proxy + '"\n dir = "' + baseDir + '" \n isVE = "' + primoVE + '"');
+  var primo = new _primo2.default(argv.vid, argv.proxy, baseDir, primoVE);
   primo.serve();
 } else {
-  console.log('Usage: primoServe --vid=NUI --proxy=https://your.primo.url --dir=/directory/to/vids');
+  console.log('primo-server version ' + require('../package.json').version);
+  console.log('Usage: primoServe --vid=NUI --proxy=https://your.primo.url --dir=/directory/to/vids --ve');
 }

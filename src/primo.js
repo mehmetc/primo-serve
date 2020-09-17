@@ -20,10 +20,12 @@ export default class Primo {
 	* @param {String} baseUrl - Base URL to your Primo environment that needs proxing
 	* @param {String} baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
 	*/
-	constructor(vid, baseUrl, baseDir) {
+	constructor(vid, baseUrl, baseDir, isVE = false) {
 		this.vid = vid;
 		this.baseUrl = baseUrl;
 		this.baseDir = baseDir;
+		this.isVE  = isVE;
+		this.URLPrefix = this.isVE ? "/discovery" : "/primo-explore";
 	}
 
 	/**
@@ -32,12 +34,13 @@ export default class Primo {
 	serve() {
 		const parsedBaseUrl = url.parse(this.baseUrl);
 		let bs = browserSync.create(parsedBaseUrl.hostname);
+		let startPath = `${this.URLPrefix}/search?vid=${this.vid}`;
 
 		bs.init({
 			ui: false,
 			files: [`${this.baseDir}/**/*`],
 			port: 8003,
-			startPath: "/primo-explore/search?vid=" + this.vid,
+			startPath: startPath,
 			proxy: {
 				target: `http://${parsedBaseUrl.hostname}`,
 				middleware: [(req, res, next) => { this._fileProxy(this.baseDir, req, res, next) },
@@ -59,7 +62,8 @@ export default class Primo {
 		console.log(req.url);
 
 		try {
-			const filePath = `${baseDir}${parsedUrl.pathname.replace('/primo-explore/custom', '')}`;
+			const filePath = `${baseDir}${parsedUrl.pathname.replace(`${this.URLPrefix}/custom`, '')}`;
+      		console.log(chalk.red(filePath));
 			const contentType = mime.lookup(filePath);
 			const data = fs.readFileSync(filePath);
 			console.log(`${chalk.bold.yellow('hijacking')} ${chalk.underline(parsedUrl.pathname)} from ${chalk.underline(filePath)} size ${chalk.bold(data.length)}`);
