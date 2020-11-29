@@ -3,28 +3,32 @@
 * @author Mehmet Celik <mehmet.celik at kuleuven.be>
 *
 * KULeuven/LIBIS
-* Mehmet Celik (c) 2018
+* Mehmet Celik (c) 2018-2020
 */
-import url from 'url'
-import browserSync from 'browser-sync'
-import proxy from 'proxy-middleware'
-import mime from 'mime-types';
-import fs from 'fs'
-import chalk from 'chalk'
+
+var url = require('url');
+var browserSync = require('browser-sync');
+var mime = require('mime-types');
+var fs = require('fs');
+var chalk = require('chalk');
+var proxy = require('proxy-middleware');
+
 
 /** Primo proxy class */
-export default class Primo {
+class Primo {
+//export default class Primo {
 	/**
 	* Create a proxy
 	* @param {String} vid - The ViewID that you wish to open
 	* @param {String} baseUrl - Base URL to your Primo environment that needs proxing
 	* @param {String} baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
 	*/
-	constructor(vid, baseUrl, baseDir, isVE = false) {
+	constructor(vid, baseUrl, baseDir, isVE = false, port = 8003) {
 		this.vid = vid;
 		this.baseUrl = baseUrl;
 		this.baseDir = baseDir;
 		this.isVE  = isVE;
+    this.port = port
 		this.URLPrefix = this.isVE ? "/discovery" : "/primo-explore";
 	}
 
@@ -39,7 +43,7 @@ export default class Primo {
 		bs.init({
 			ui: false,
 			files: [`${this.baseDir}/**/*`],
-			port: 8003,
+			port: this.port,
 			startPath: startPath,
 			proxy: {
 				target: `http://${parsedBaseUrl.hostname}`,
@@ -80,3 +84,5 @@ export default class Primo {
 		}
 	}
 }
+
+module.exports = Primo;

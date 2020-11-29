@@ -6,11 +6,12 @@ This is **not** a replacement for [primo-explore-devenv](https://github.com/ExLi
 
 #### Usage
 ```bash
-primoServe --vid=NUI --proxy=https://your.primo.url --dir=/directory/to/vids
+primoServe --vid=NUI --proxy=https://your.primo.url --dir=/directory/to/vids --ve
 ```
 * __vid__: The ViewID that you wish to open
 * __proxy__: Base URL to your Primo environment
 * __dir__: The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/. If omitted the current directory will be taken.
+* __ve__: Flag to mark this as a Primo VE custom package
 
 #### Install
 __with yarn__
