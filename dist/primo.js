@@ -28,7 +28,7 @@ class Primo {
   * @param {String} baseUrl - Base URL to your Primo environment that needs proxing
   * @param {String} baseDir - The directory your data is stored in. The proxy will look in this directory for every path that starts with /primo-explore/custom/.
   */
-  constructor(vid, baseUrl, baseDir, isVE = falsei, port = 8003) {
+  constructor(vid, baseUrl, baseDir, isVE = false, port = 8003) {
     this.vid = vid;
     this.baseUrl = baseUrl;
     this.baseDir = baseDir;
